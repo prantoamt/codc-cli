@@ -62,7 +62,7 @@ class GeneExpressionAnalyzer:
         n_genes = min(data1.shape[0], data2.shape[0])
 
         # Print dataset summary
-        print(f"Starting DC Copula Co-expression calculation:")
+        print(f"Starting DC Copula coexpression calculation:")
         print(f" - Number of genes to be analyzed: {n_genes}")
         print(f" - Ties method: {ties_method}")
         print(f" - Smoothing technique: {smoothing}")
