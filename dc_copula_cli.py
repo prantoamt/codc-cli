@@ -1,10 +1,7 @@
 import numpy as np
 import pandas as pd
 import click
-from tqdm import tqdm
-from scipy.stats import ks_2samp
 
-# Assuming GeneExpressionAnalyzer and EmpiricalCopula are defined in other modules or earlier in the script
 from analyzer import GeneExpressionAnalyzer
 from copula.empirical_copula import EmpiricalCopula
 
@@ -14,19 +11,19 @@ from copula.empirical_copula import EmpiricalCopula
     "--inputfile_1",
     type=str,
     required=True,
-    help="Path to the CSV file containing the tumor gene expression data.",
+    help="Path to the TSV file containing the tumor gene expression data.",
 )
 @click.option(
     "--inputfile_2",
     type=str,
     required=True,
-    help="Path to the CSV file containing the normal gene expression data.",
+    help="Path to the TSV file containing the normal gene expression data.",
 )
 @click.option(
     "--output_path",
     type=str,
     required=True,
-    help="Output path to save the resulting CSV file containing the distance matrix.",
+    help="Output path to save the resulting TSV file containing the distance matrix.",
 )
 @click.option(
     "--ties_method",
@@ -52,8 +49,8 @@ def main(inputfile_1, inputfile_2, output_path, ties_method, smoothing, ks_stat_
     using the Kolmogorov-Smirnov distance between their empirical copulas. It assesses the similarity
     in gene expression distributions between phenotypes such as 'tumor' and 'normal'.
     """
-    df1 = pd.read_csv(inputfile_1)
-    df2 = pd.read_csv(inputfile_2)
+    df1 = pd.read_csv(inputfile_1, delimiter="\t")
+    df2 = pd.read_csv(inputfile_2, delimiter="\t")
 
     empirical_copula = EmpiricalCopula()
     analyzer = GeneExpressionAnalyzer(empirical_copula=empirical_copula)
@@ -66,7 +63,7 @@ def main(inputfile_1, inputfile_2, output_path, ties_method, smoothing, ks_stat_
         ks_stat_method=ks_stat_method,
     )
 
-    np.savetxt(output_path, distance_matrix, delimiter=",", fmt="%f")
+    np.savetxt(output_path, distance_matrix, delimiter="\t", fmt="%f")
     print(f"Saved the computed distance matrix to {output_path}")
 
 
