@@ -11,13 +11,13 @@ from copula.empirical_copula import EmpiricalCopula
 
 @click.command()
 @click.option(
-    "--tumor_dataset",
+    "--inputfile_1",
     type=str,
     required=True,
     help="Path to the CSV file containing the tumor gene expression data.",
 )
 @click.option(
-    "--normal_dataset",
+    "--inputfile_2",
     type=str,
     required=True,
     help="Path to the CSV file containing the normal gene expression data.",
@@ -46,16 +46,14 @@ from copula.empirical_copula import EmpiricalCopula
     default="asymp",
     help="Mode parameter for the ks_2samp function.",
 )
-def main(
-    tumor_dataset, normal_dataset, output_path, ties_method, smoothing, ks_stat_method
-):
+def main(inputfile_1, inputfile_2, output_path, ties_method, smoothing, ks_stat_method):
     """
     This script computes a matrix of differential coexpression scores for gene pairs across two conditions,
     using the Kolmogorov-Smirnov distance between their empirical copulas. It assesses the similarity
     in gene expression distributions between phenotypes such as 'tumor' and 'normal'.
     """
-    df1 = pd.read_csv(tumor_dataset)
-    df2 = pd.read_csv(normal_dataset)
+    df1 = pd.read_csv(inputfile_1)
+    df2 = pd.read_csv(inputfile_2)
 
     empirical_copula = EmpiricalCopula()
     analyzer = GeneExpressionAnalyzer(empirical_copula=empirical_copula)
