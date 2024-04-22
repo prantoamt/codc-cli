@@ -23,7 +23,7 @@ from copula.empirical_copula import EmpiricalCopula
     "--output_path",
     type=str,
     required=True,
-    help="Output path to save the resulting TSV file containing the distance matrix.",
+    help="Output path to save the resulting TSV file containing the distance matrix. The output file name will be network.tsv",
 )
 @click.option(
     "--ties_method",
