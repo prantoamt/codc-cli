@@ -22,7 +22,7 @@ class GeneExpressionAnalyzer:
         """
         self.empirical_copula = empirical_copula
 
-    def compute_dc_copula_matrix(
+    def compute_dc_copula_network(
         self,
         df1: pd.DataFrame,
         df2: pd.DataFrame,
@@ -31,9 +31,9 @@ class GeneExpressionAnalyzer:
         ks_stat_method: str = "asymp",
     ) -> np.ndarray:
         """
-        Computes a matrix of differential coexpression scores for gene pairs across two conditions.
+        Computes a network of differential coexpression scores for gene pairs across two conditions.
         The score for each gene pair is calculated using the Kolmogorov-Smirnov distance between their empirical
-        copulas, representing the degree of differential coexpression. This matrix is used to assess the similarity
+        copulas, representing the degree of differential coexpression. This network is used to assess the similarity
         in gene expression distributions between 'tumor' and 'normal' phenotypes for example.
 
         Args:
@@ -50,17 +50,22 @@ class GeneExpressionAnalyzer:
                                 Kolmogorov-Smirnov statistic is computed. Default is 'asymp'.
 
         Returns:
-            np.ndarray: A symmetric matrix where element (i, j) contains the Kolmogorov-Smirnov distance
-                        between the empirical copulas of gene pair (i, j) from df1 and df2.
-
-        Notes:
-            The matrix is symmetric with zeros on the diagonal, indicating no distance between identical gene pairs.
+            np.ndarray: A network where:
+                        First column target: Target of the edge
+                        Second column regulator: Source of the edge
+                        Third column condition: Condition that the edge belongs to
+                        Fourth column weight: Weight of the edge
         """
         # Extract gene names from the first column
         gene_names = df1.iloc[:, 0].values
         assert np.array_equal(
             gene_names, df2.iloc[:, 0].values
         ), "Gene lists must match!"
+
+        # Initialize an empty DataFrame for the network
+        network_df = pd.DataFrame(
+            columns=["Target", "Regulator", "Condition", "Weight"]
+        )
 
         # Extracting numeric data from the dataframes, assuming the first column is the header
         data1 = df1.iloc[:, 1:].values
@@ -103,13 +108,20 @@ class GeneExpressionAnalyzer:
                 )
 
                 ks_stat, _ = ks_2samp(ec1, ec2, method=ks_stat_method)
-                dist_mat[i, j] = ks_stat
-                dist_mat[j, i] = ks_stat
+
+                # Append each pair as a separate row in the DataFrame
+                network_df = network_df.append(
+                    {
+                        "Target": gene_names[j],
+                        "Regulator": gene_names[i],
+                        "Condition": "Normal",
+                        "Weight": ks_stat,
+                    },
+                    ignore_index=True,
+                )
 
                 pbar.update(1)  # Update the progress bar after each iteration
 
         pbar.close()  # Close the progress bar when done
 
-        # Create a DataFrame with gene names and the distance matrix
-        result_df = pd.DataFrame(dist_mat, index=gene_names, columns=gene_names)
-        return result_df
+        return network_df
