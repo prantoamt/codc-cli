@@ -28,7 +28,7 @@ class GeneExpressionAnalyzer:
         df2: pd.DataFrame,
         ties_method: str = "average",
         smoothing: str = "none",
-        ks_stat_mode: str = "asymp",
+        ks_stat_method: str = "asymp",
     ) -> np.ndarray:
         """
         Computes a matrix of differential coexpression scores for gene pairs across two conditions.
@@ -43,10 +43,10 @@ class GeneExpressionAnalyzer:
             df2 (pd.DataFrame): Gene expression data for the second phenotype (e.g., normal),
                                 structured like df1.
             ties_method (str): Specifies the method for ranking ties within the pseudo-observations.
-                               Options are 'average', 'min', 'max', 'dense', 'ordinal'. Default is 'average'.
+                            Options are 'average', 'min', 'max', 'dense', 'ordinal'. Default is 'average'.
             smoothing (str): Specifies the type of smoothing to apply to the empirical copula.
-                             Options are 'none', 'beta', 'checkerboard'. Default is 'none'.
-            ks_stat_mode (str): Mode parameter for the ks_2samp function, determining how the
+                            Options are 'none', 'beta', 'checkerboard'. Default is 'none'.
+            ks_stat_method (str): method parameter for the ks_2samp function, determining how the
                                 Kolmogorov-Smirnov statistic is computed. Default is 'asymp'.
 
         Returns:
@@ -56,10 +56,18 @@ class GeneExpressionAnalyzer:
         Notes:
             The matrix is symmetric with zeros on the diagonal, indicating no distance between identical gene pairs.
         """
-        ## Extracting numeric data from the dataframes, assuming the first column is the header
+        # Extracting numeric data from the dataframes, assuming the first column is the header
         data1 = df1.iloc[:, 1:].values
         data2 = df2.iloc[:, 1:].values
         n_genes = min(data1.shape[0], data2.shape[0])
+
+        # Print dataset summary
+        print(f"Starting DC Copula coexpression calculation:")
+        print(f" - Number of genes to be analyzed: {n_genes}")
+        print(f" - Ties method: {ties_method}")
+        print(f" - Smoothing technique: {smoothing}")
+        print(f" - KS statistic mode: {ks_stat_method}")
+
         dist_mat = np.zeros((n_genes, n_genes))
 
         # Create a tqdm progress bar
@@ -88,12 +96,11 @@ class GeneExpressionAnalyzer:
                     u2, gene_pair_data2, ties_method, smoothing
                 )
 
-                ks_stat, _ = ks_2samp(ec1, ec2, mode=ks_stat_mode)
+                ks_stat, _ = ks_2samp(ec1, ec2, method=ks_stat_method)
                 dist_mat[i, j] = ks_stat
                 dist_mat[j, i] = ks_stat
 
-                # Update the progress bar after each iteration
-                pbar.update(1)
+                pbar.update(1)  # Update the progress bar after each iteration
 
         pbar.close()  # Close the progress bar when done
         return dist_mat
