@@ -60,7 +60,7 @@ def main(inputfile_1, inputfile_2, output_path, ties_method, smoothing, ks_stat_
     analyzer = GeneExpressionAnalyzer(empirical_copula=empirical_copula)
 
     # Computing the distance matrix using the specified methods
-    distance_matrix = analyzer.compute_dc_copula_matrix(
+    distance_df = analyzer.compute_dc_copula_matrix(
         df1,
         df2,
         ties_method=ties_method,
@@ -70,7 +70,7 @@ def main(inputfile_1, inputfile_2, output_path, ties_method, smoothing, ks_stat_
 
     # Saving the distance matrix to the specified output path
     output_path = f"{output_path}/network.tsv"
-    np.savetxt(output_path, distance_matrix, delimiter="\t", fmt="%f")
+    distance_df.to_csv(output_path, sep="\t", index=True, header=True)
     print(f"Saved the computed distance matrix to {output_path}")
 
 

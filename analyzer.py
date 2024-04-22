@@ -56,6 +56,12 @@ class GeneExpressionAnalyzer:
         Notes:
             The matrix is symmetric with zeros on the diagonal, indicating no distance between identical gene pairs.
         """
+        # Extract gene names from the first column
+        gene_names = df1.iloc[:, 0].values
+        assert np.array_equal(
+            gene_names, df2.iloc[:, 0].values
+        ), "Gene lists must match!"
+
         # Extracting numeric data from the dataframes, assuming the first column is the header
         data1 = df1.iloc[:, 1:].values
         data2 = df2.iloc[:, 1:].values
@@ -103,4 +109,7 @@ class GeneExpressionAnalyzer:
                 pbar.update(1)  # Update the progress bar after each iteration
 
         pbar.close()  # Close the progress bar when done
-        return dist_mat
+
+        # Create a DataFrame with gene names and the distance matrix
+        result_df = pd.DataFrame(dist_mat, index=gene_names, columns=gene_names)
+        return result_df
