@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import pytest
-from GeneExpressionAnalyzer.Copula.empirical_copula import (
+from GeneCoExpress.Copula.empirical_copula import (
     EmpiricalCopula,
 )  # Make sure to import your class correctly
 
