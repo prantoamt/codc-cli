@@ -62,10 +62,8 @@ class GeneExpressionAnalyzer:
             gene_names, df2.iloc[:, 0].values
         ), "Gene lists must match!"
 
-        # Initialize an empty DataFrame for the network
-        network_df = pd.DataFrame(
-            columns=["Target", "Regulator", "Condition", "Weight"]
-        )
+        # Initialize an empty List for the network
+        rows_list = []
 
         # Extracting numeric data from the dataframes, assuming the first column is the header
         data1 = df1.iloc[:, 1:].values
@@ -78,8 +76,6 @@ class GeneExpressionAnalyzer:
         print(f" - Ties method: {ties_method}")
         print(f" - Smoothing technique: {smoothing}")
         print(f" - KS statistic mode: {ks_stat_method}")
-
-        dist_mat = np.zeros((n_genes, n_genes))
 
         # Create a tqdm progress bar
         pbar = tqdm(
@@ -109,19 +105,19 @@ class GeneExpressionAnalyzer:
 
                 ks_stat, _ = ks_2samp(ec1, ec2, method=ks_stat_method)
 
-                # Append each pair as a separate row in the DataFrame
-                network_df = network_df.append(
+                # Append each pair as a separate row in the List
+                rows_list.append(
                     {
                         "Target": gene_names[j],
                         "Regulator": gene_names[i],
                         "Condition": "Normal",
                         "Weight": ks_stat,
-                    },
-                    ignore_index=True,
+                    }
                 )
 
                 pbar.update(1)  # Update the progress bar after each iteration
 
         pbar.close()  # Close the progress bar when done
-
+        # Creating a DataFrame from the list of rows
+        network_df = pd.DataFrame(rows_list)
         return network_df

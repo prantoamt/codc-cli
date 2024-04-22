@@ -23,7 +23,7 @@ from copula.empirical_copula import EmpiricalCopula
     "--output_path",
     type=str,
     required=True,
-    help="Output path to save the resulting TSV file containing the differential coexpression network. The file name will be network.tsv",
+    help="Output path to store the resulting TSV file containing the differential coexpression network. The file name will be network.tsv",
 )
 @click.option(
     "--ties_method",
@@ -45,11 +45,10 @@ from copula.empirical_copula import EmpiricalCopula
 )
 def main(inputfile_1, inputfile_2, output_path, ties_method, smoothing, ks_stat_method):
     """
-    This script computes a matrix of differential coexpression scores for gene pairs across two conditions,
-    using the Kolmogorov-Smirnov distance between their empirical copulas (Differential Empirical Copula Coexpression).
-    It assesses the similarity in gene expression distributions between phenotypes such as 'tumor' and 'normal'
-    (Could be other as well). It then creates a gene network matrix from the differential Empirical Copula Coexpression
-    matrix and stores the matrix as a network.tsv file in the specified output directory.
+    This script computes a network of differential coexpression scores for gene pairs across two conditions,
+    using the Kolmogorov-Smirnov distance between their empirical copulas.
+    It assesses the similarity in joint gene expression distributions between phenotypes such as 'tumor' and 'normal'
+    (Could be other as well).
     """
     # Loading data from TSV files
     df1 = pd.read_csv(inputfile_1, delimiter="\t")
@@ -59,8 +58,8 @@ def main(inputfile_1, inputfile_2, output_path, ties_method, smoothing, ks_stat_
     empirical_copula = EmpiricalCopula()
     analyzer = GeneExpressionAnalyzer(empirical_copula=empirical_copula)
 
-    # Computing the distance matrix using the specified methods
-    distance_df = analyzer.compute_dc_copula_matrix(
+    # Computing the network using the specified methods
+    network_df = analyzer.compute_dc_copula_network(
         df1,
         df2,
         ties_method=ties_method,
@@ -68,10 +67,10 @@ def main(inputfile_1, inputfile_2, output_path, ties_method, smoothing, ks_stat_
         ks_stat_method=ks_stat_method,
     )
 
-    # Saving the distance matrix to the specified output path
+    # Saving the network to the specified output path
     output_path = f"{output_path}/network.tsv"
-    distance_df.to_csv(output_path, sep="\t", index=True, header=True)
-    print(f"Saved the computed distance matrix to {output_path}")
+    network_df.to_csv(output_path, sep="\t", index=True, header=True)
+    print(f"Saved the computed network to {output_path}")
 
 
 if __name__ == "__main__":
