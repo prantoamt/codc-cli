@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import pytest
-from GeneCoExpress.Copula.empirical_copula import (
+from copula.empirical_copula import (
     EmpiricalCopula,
 )  # Make sure to import your class correctly
 
@@ -24,7 +24,7 @@ def test_check_evaluation_points_invalid():
 
 def test_pseudo_observations_avg_ties():
     # Example data, mimicking the expected input format and data
-    data = pd.read_csv("GeneExpressionAnalyzer/tests/data/BRCA_normal_subset.csv")
+    data = pd.read_csv("gene-coexpress/tests/data/BRCA_normal_subset.csv")
     # Exclude the first column from the data
     data = data.iloc[:, 1:].values  # This selects all columns except the first one
     expected_output = np.array(
@@ -296,7 +296,7 @@ def test_pseudo_observations_avg_ties():
 
 def test_empirical_distribution_function():
     # Load the data from the specified CSV file
-    data = pd.read_csv("GeneExpressionAnalyzer/tests/data/BRCA_normal_subset.csv")
+    data = pd.read_csv("gene-coexpress/tests/data/BRCA_normal_subset.csv")
 
     # Exclude the first column from the data
     data = data.iloc[:, 1:].values  # This selects all columns except the first one
@@ -320,7 +320,7 @@ def test_empirical_distribution_function():
 
 def test_empirical_copula_avg_ties():
     # Load the data from the specified CSV file
-    data = pd.read_csv("GeneExpressionAnalyzer/tests/data/BRCA_normal_subset.csv")
+    data = pd.read_csv("gene-coexpress/tests/data/BRCA_normal_subset.csv")
 
     # Exclude the first column from the data
     data = data.iloc[:, 1:].values  # This selects all columns except the first one
@@ -344,7 +344,7 @@ def test_empirical_copula_avg_ties():
 
 def test_empirical_copula_max_ties():
     # Load the data from the specified CSV file
-    data = pd.read_csv("GeneExpressionAnalyzer/tests/data/BRCA_normal_subset.csv")
+    data = pd.read_csv("gene-coexpress/tests/data/BRCA_normal_subset.csv")
 
     # Exclude the first column from the data
     data = data.iloc[:, 1:].values  # This selects all columns except the first one

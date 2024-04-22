@@ -6,7 +6,7 @@ from scipy.stats import ks_2samp
 
 # Assuming GeneExpressionAnalyzer and EmpiricalCopula are defined in other modules or earlier in the script
 from analyzer import GeneExpressionAnalyzer
-from Copula.empirical_copula import EmpiricalCopula
+from copula.empirical_copula import EmpiricalCopula
 
 
 @click.command()
