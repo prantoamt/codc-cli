@@ -48,7 +48,7 @@ def main(inputfile_1, inputfile_2, output_path, ties_method, smoothing, ks_stat_
     This script computes a network of differential coexpression scores for gene pairs across two conditions,
     using the Kolmogorov-Smirnov distance between their empirical copulas.
     It assesses the similarity in joint gene expression distributions between phenotypes such as 'tumor' and 'normal'
-    (Could be other as well).
+    (Could be other as well). For detail explaination: https://github.com/prantoamt/gene-coexpress/wiki
     """
     # Loading data from TSV files
     df1 = pd.read_csv(inputfile_1, delimiter="\t")
