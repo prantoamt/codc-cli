@@ -15,5 +15,5 @@ RUN pdm install --prod
 
 # Define an entry point for the container; this is the command-line tool
 ENTRYPOINT ["pdm", "run", "dc_copula_cli.py"]
-# If additional arguments are required, they can be provided in the CMD instruction
+# If additional arguments are required, they can be provided in the CMD instruction.
 CMD ["--help"]
