@@ -69,7 +69,7 @@ def main(inputfile_1, inputfile_2, output_path, ties_method, smoothing, ks_stat_
 
     # Saving the network to the specified output path
     output_path = f"{output_path}/network.tsv"
-    network_df.to_csv(output_path, sep="\t", index=True, header=True)
+    network_df.to_csv(output_path, sep="\t", index=False, header=True)
     print(f"Saved the computed network to {output_path}")
 
 
