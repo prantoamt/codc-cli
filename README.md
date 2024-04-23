@@ -35,6 +35,29 @@ pdm run dc_copula_cli.py --inputfile_1 /path/to/tumor_data.tsv --inputfile_2 /pa
 
 For more detailed usage examples, parameter explanations, and tutorials, please see the [Usage Examples](https://github.com/prantoamt/gene-coexpress/wiki/Usage-Examples) section of our project Wiki.
 
+---
+
+## Docker Quick Start
+
+For users who prefer containerized environments, `gene-coexpress` can also be run using Docker, which simplifies dependency management and ensures consistency across different computing environments.
+
+### Setup with Docker
+
+1. **Build the Docker Image**:
+   ```bash
+   docker build -t gene-coexpress .
+   ```
+
+### Running with Docker
+
+Use the following command to run `gene-coexpress` in a Docker container, replacing the placeholders with your actual data paths:
+```bash
+docker run --rm -v /path/to/your/data:/data gene-coexpress --inputfile_1 /data/tumor_data.tsv --inputfile_2 /data/normal_data.tsv --output_path /data/output/network.tsv
+```
+
+For a detailed guide on installing, configuring, and using the tool with Docker, please visit our [Docker Usage Instructions](https://github.com/prantoamt/gene-coexpress/wiki/Using-Gene%E2%80%90Coexpress-with-Docker) in the project Wiki.
+
+
 ## Documentation
 
 For a comprehensive guide on setting up, running, and interpreting the output of Gene-Coexpress, refer to the [project Wiki](https://github.com/prantoamt/gene-coexpress/wiki).
