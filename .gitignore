@@ -129,3 +129,4 @@ output/
 config.ini
 secret.json
 
+*.DS_Store
