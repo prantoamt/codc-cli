@@ -30,7 +30,7 @@ Gene-coexpress is implemented in Python and utilizes `pdm` for dependency manage
 
 Run the tool using the command below, specifying the paths to your input TSV files and the desired output path for the results:
 ```bash
-pdm run dc_copula_cli.py --inputfile_1 /path/to/tumor_data.tsv --inputfile_2 /path/to/normal_data.tsv --output_path /path/to/output/network.tsv
+pdm run dc_copula_cli.py --inputfile_1 /path/to/tumor_data.tsv --inputfile_2 /path/to/normal_data.tsv --output_path /path/to/output
 ```
 
 For more detailed usage examples, parameter explanations, and tutorials, please see the [Usage Examples](https://github.com/prantoamt/gene-coexpress/wiki/Usage-Examples) section of our project Wiki.
@@ -52,7 +52,7 @@ For users who prefer containerized environments, `gene-coexpress` can also be ru
 
 Use the following command to run `gene-coexpress` in a Docker container, replacing the placeholders with your actual data paths:
 ```bash
-docker run --rm -v /path/to/your/data:/data gene-coexpress --inputfile_1 /data/tumor_data.tsv --inputfile_2 /data/normal_data.tsv --output_path /data/output/network.tsv
+docker run --rm -v /path/to/your/data:/data gene-coexpress --inputfile_1 /data/tumor_data.tsv --inputfile_2 /data/normal_data.tsv --output_path /data/output
 ```
 
 For a detailed guide on installing, configuring, and using the tool with Docker, please visit our [Docker Usage Instructions](https://github.com/prantoamt/gene-coexpress/wiki/Using-Gene%E2%80%90Coexpress-with-Docker) in the project Wiki.
