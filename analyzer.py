@@ -72,7 +72,7 @@ class GeneExpressionAnalyzer:
 
         # Print dataset summary
         print(f"Starting DC Copula coexpression calculation:")
-        print(f" - Number of genes pairs to be analyzed: {n_genes*n_genes}")
+        print(f" - Number of gene pairs to be analyzed: {n_genes*n_genes}")
         print(f" - Ties method: {ties_method}")
         print(f" - Smoothing technique: {smoothing}")
         print(f" - KS statistic mode: {ks_stat_method}")
