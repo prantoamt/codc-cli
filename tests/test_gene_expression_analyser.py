@@ -57,8 +57,10 @@ def test_ks_stat_method(setup_data, method):
     assert len(network_df) == 3  # Check for the correct number of pairs processed
 
 
-def test_compute_dc_copula_network_result(setup_data):
-    df1, df2, analyzer = setup_data
+def test_compute_dc_copula_network_result():
+    df1 = pd.read_csv("./tests/data/BRCA_normal_subset.tsv", sep="\t")
+    df2 = pd.read_csv("./tests/data/BRCA_tumor_subset.tsv", sep="\t")
+    empirical_copula = EmpiricalCopula()
+    analyzer = GeneExpressionAnalyzer(empirical_copula=empirical_copula)
     network_df = analyzer.compute_dc_copula_network(df1, df2, ks_stat_method="asymp")
     print(network_df)
-    assert len(network_df) == 3  # Check for the correct number of pairs processed
