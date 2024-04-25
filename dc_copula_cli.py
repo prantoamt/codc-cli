@@ -8,13 +8,13 @@ from copula.empirical_copula import EmpiricalCopula
 
 @click.command()
 @click.option(
-    "--inputfile_1",
+    "--input_file_1",
     type=str,
     required=True,
     help="Path to the TSV file containing gene expression data.",
 )
 @click.option(
-    "--inputfile_2",
+    "--input_file_2",
     type=str,
     required=True,
     help="Path to the TSV file containing gene expression data.",
@@ -43,7 +43,9 @@ from copula.empirical_copula import EmpiricalCopula
     default="asymp",
     help="Mode parameter for the ks_2samp function, which determines how the Kolmogorov-Smirnov statistic is computed.",
 )
-def main(inputfile_1, inputfile_2, output_path, ties_method, smoothing, ks_stat_method):
+def main(
+    input_file_1, input_file_2, output_path, ties_method, smoothing, ks_stat_method
+):
     """
     This script computes a network of differential coexpression scores for gene pairs across two conditions,
     using the Kolmogorov-Smirnov distance between their empirical copulas.
@@ -51,8 +53,8 @@ def main(inputfile_1, inputfile_2, output_path, ties_method, smoothing, ks_stat_
     (Could be other as well). For detail explaination: https://github.com/prantoamt/gene-coexpress/wiki
     """
     # Loading data from TSV files
-    df1 = pd.read_csv(inputfile_1, delimiter="\t")
-    df2 = pd.read_csv(inputfile_2, delimiter="\t")
+    df1 = pd.read_csv(input_file_1, delimiter="\t")
+    df2 = pd.read_csv(input_file_2, delimiter="\t")
 
     # Initializing the EmpiricalCopula and GeneExpressionAnalyzer instances
     empirical_copula = EmpiricalCopula()
