@@ -87,6 +87,7 @@ if (!dir.exists(dirname(output_path))) {
 cat("\t Plotting data...\n")
 Sys.sleep(1)  # simulate delay
 setTxtProgressBar(pb, 5)
+cat("\t Finished...\n")
 setwd(dirname(output_path))  # Set the working directory to the output path's directory
 output_file <- file.path(output_path, paste0("ontology", ".png"))
 
