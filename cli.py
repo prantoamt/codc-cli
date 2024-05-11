@@ -1,5 +1,9 @@
 import subprocess
 
+import time
+import pandas as pd
+import csv
+
 import pandas as pd
 import click
 
@@ -37,9 +41,7 @@ def cli(ctx):
     ctx.max_content_width = 120  # Adjust the width to allow longer lines
 
 
-@cli.command(
-    "copula-diff-coexpress", short_help="Compute network of differential coexpression."
-)
+@cli.command("codc", short_help="Compute network of differential coexpression.")
 @click.option(
     "--input_file_1",
     type=str,
@@ -76,7 +78,7 @@ def cli(ctx):
     default="asymp",
     help="Mode parameter for the ks_2samp function, which determines how the Kolmogorov-Smirnov statistic is computed.",
 )
-def copula_diff_coexpress(
+def calculate_codc(
     input_file_1, input_file_2, output_path, ties_method, smoothing, ks_stat_method
 ):
     """
@@ -207,8 +209,84 @@ def go_enrichment(
         click.echo(f"Error output: {e.stderr}")
 
 
-cli.add_command(copula_diff_coexpress)
+@click.command(
+    "python-performance",
+    short_help="Measure performance of the CODC computation with python code.",
+)
+@click.option(
+    "--input_file_1",
+    type=str,
+    required=True,
+    help="Path to the first TSV file containing gene expression data.",
+)
+@click.option(
+    "--input_file_2",
+    type=str,
+    required=True,
+    help="Path to the second TSV file containing gene expression data.",
+)
+@click.option(
+    "--iterations",
+    type=int,
+    default=10,
+    help="Number of times the performance measurement is to be executed.",
+)
+@click.option(
+    "--output_path",
+    type=str,
+    required=True,
+    help="Directory where the performance results will be saved as python_execution_times.csv.",
+)
+def measure_python_performance(input_file_1, input_file_2, output_path, iterations):
+    """
+    Measures and logs the execution time of differential coexpression network calculations
+    over multiple runs specified by the user. This function evaluates the performance of the
+    empirical copula approach in python code.
+    """
+    # Loading data from TSV files
+    df1 = pd.read_csv(input_file_1, delimiter="\t")
+    df2 = pd.read_csv(input_file_2, delimiter="\t")
+
+    # Initializing the EmpiricalCopula and GeneExpressionAnalyzer instances
+    empirical_copula = EmpiricalCopula()
+    analyzer = GeneExpressionAnalyzer(empirical_copula=empirical_copula)
+
+    # Configuration for performance measurement
+    ties_method = "average"  # Could be parameterized if needed
+    smoothing = "none"  # Could be parameterized if needed
+    ks_stat_method = "asymp"  # Could be parameterized if needed
+
+    # Measuring execution times
+    execution_times = []
+    for i in range(iterations):
+        start_time = time.time()
+        network_df = analyzer.compute_dc_copula_network(
+            df1,
+            df2,
+            ties_method=ties_method,
+            smoothing=smoothing,
+            ks_stat_method=ks_stat_method,
+        )
+        elapsed_time = time.time() - start_time
+        execution_times.append(elapsed_time)
+        print(f"Execution {i + 1}: {elapsed_time:.4f} seconds")
+
+    # Output path for CSV file
+    timings_csv = f"{output_path}/python_execution_times.csv"
+
+    # Storing execution times in a CSV file
+    with open(timings_csv, "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Iteration", "Time"])
+        for idx, exec_time in enumerate(execution_times, start=1):
+            writer.writerow([idx, exec_time])
+
+    print(f"Saved execution times to {timings_csv}")
+
+
+cli.add_command(calculate_codc)
 cli.add_command(go_enrichment)
+cli.add_command(measure_python_performance)
 
 if __name__ == "__main__":
     cli()
