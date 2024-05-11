@@ -58,7 +58,7 @@ docker run --rm -v /tests/data:/data codc-tool codc --input_file_1 /data/BRCA_no
 
 ### Using Locally
 ```bash
-pdm run codc --input_file_1 /tests/data/BRCA_normal.tsv --input_file_2 /tests/data/BRCA_tumor.tsv --output_path /tests/data/
+pdm run cli codc --input_file_1 /tests/data/BRCA_normal.tsv --input_file_2 /tests/data/BRCA_tumor.tsv --output_path /tests/data/
 ```
 
 ## Explanation of the Relevant Parameters
