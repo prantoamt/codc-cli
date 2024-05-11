@@ -159,7 +159,7 @@ def test_compute_dc_copula_network_result():
                 "KBTBD10",
                 "NRAP",
             ],
-            "Condition": ["Normal"] * 45,
+            "Condition": ["Diff Co-Exp of both Condition"] * 45,
             "Weight": [
                 0.111111,
                 0.111111,
