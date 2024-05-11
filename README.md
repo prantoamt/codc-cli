@@ -22,7 +22,7 @@
 
 ## Brief Description
 CODC is a Command-Line Interface (CLI) designed for analyzing gene expression data to identify differential coexpression between two conditions using a copula-based approach. 
-This tool is reimplemented in python and R based on the author's R implementation due to calculation complexoty issue. Besides the coexpression calculation scripts, it also provides downstream and performace measurement scripts.
+This tool is reimplemented in python and R based on the [author's R implementation](https://github.com/Snehalikalall/CODC/blob/master/distance_mat_calculation.R) due to calculation complexoty issue. Besides the coexpression calculation scripts, it also provides downstream and performace measurement scripts.
 
 ## Reference to the Publication
 This tool implements the method proposed by Ray, S., Lall, S., & Bandyopadhyay, S. in "CODC: a Copula-based model to identify differential coexpression." You can read the study here: [npj Systems Biology and Applications (2020)](https://doi.org/10.1038/s41540-020-0137-9).
@@ -31,8 +31,8 @@ This tool implements the method proposed by Ray, S., Lall, S., & Bandyopadhyay, 
 The CLI includes commands for:
 - Copula based differential co-expression calculation (`codc`)
 - [GO enrichment analysis (`go-enrichment`)](downstream-analysis/go-enrichment.md)
-- [Performance measurement of Python (`python-performance`)](downstream-analysis/performance-measure.md)
-- [Performance measurement of R (`r-performance`)]((downstream-analysis/performance-measure.md))
+- [Performance measurement of Python script (`python-performance`)](downstream-analysis/performance-measure.md)
+- [Performance measurement of R script (`r-performance`)]((downstream-analysis/performance-measure.md))
 
 This readme, explains Copula based differential co-expression calculation (`codc`).
 
