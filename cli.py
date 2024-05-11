@@ -235,7 +235,7 @@ def go_enrichment(
     "--output_path",
     type=str,
     required=True,
-    help="Directory where the performance results will be saved as python_execution_times.csv.",
+    help="Directory where the performance results will be saved as python_performance.csv.",
 )
 def measure_python_performance(input_file_1, input_file_2, output_path, iterations):
     """
@@ -272,7 +272,7 @@ def measure_python_performance(input_file_1, input_file_2, output_path, iteratio
         print(f"Execution {i + 1}: {elapsed_time:.4f} seconds")
 
     # Output path for CSV file
-    timings_csv = f"{output_path}/python_execution_times.csv"
+    timings_csv = f"{output_path}/python_performance.csv"
 
     # Storing execution times in a CSV file
     with open(timings_csv, "w", newline="") as file:
