@@ -211,7 +211,7 @@ def go_enrichment(
 
 @click.command(
     "python-performance",
-    short_help="Measure performance of the CODC computation with python code.",
+    short_help="Measure performance of the CODC computation with python script.",
 )
 @click.option(
     "--input_file_1",
@@ -284,9 +284,75 @@ def measure_python_performance(input_file_1, input_file_2, output_path, iteratio
     print(f"Saved execution times to {timings_csv}")
 
 
+@click.command(
+    "r-performance",
+    short_help="Measure performance of the CODC computation with R script.",
+)
+@click.option(
+    "--input_file_1",
+    type=str,
+    required=True,
+    help="Path to the first TSV file containing gene expression data.",
+)
+@click.option(
+    "--input_file_2",
+    type=str,
+    required=True,
+    help="Path to the second TSV file containing gene expression data.",
+)
+@click.option(
+    "--iterations",
+    type=int,
+    default=10,
+    help="Number of times the performance measurement is to be executed.",
+)
+@click.option(
+    "--output_path",
+    type=str,
+    required=True,
+    help="Output directory where the performance results will be saved.",
+)
+def measure_r_performance(input_file_1, input_file_2, iterations, output_path):
+    """
+    Calls an R script to measure performance of a differential co-expression analysis tool.
+    The script computes a distance matrix repeatedly and logs the time taken for each run.
+    """
+
+    # Path to the R script
+    R_SCRIPT_PATH = "./R_performance_cli.R"
+
+    # Construct the command to execute the R script
+    command = f"Rscript {R_SCRIPT_PATH} --input_file_1={input_file_1} --input_file_2={input_file_2} --iterations={iterations} --output_path={output_path}"
+
+    try:
+        # Start the subprocess and open a pipe to its stdout.
+        with subprocess.Popen(
+            command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        ) as proc:
+            # Read the output line by line as it becomes available.
+            while True:
+                output = proc.stdout.readline()
+                if output == "" and proc.poll() is not None:
+                    break
+                if output:
+                    print(output.strip(), flush=True)
+            # Check for errors
+            stderr = proc.stderr.read()
+            if stderr:
+                print(f"Error output: {stderr}", flush=True)
+    except subprocess.CalledProcessError as e:
+        click.echo(f"Failed to execute R script. Command tried: {command}")
+        click.echo(f"Error output: {e.stderr}")
+
+
 cli.add_command(calculate_codc)
 cli.add_command(go_enrichment)
 cli.add_command(measure_python_performance)
+cli.add_command(measure_r_performance)
 
 if __name__ == "__main__":
     cli()
