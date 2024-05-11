@@ -58,39 +58,9 @@ The commands will output the `network.tsv`in `/tests/data/` directory
 docker run --rm -v /tests/data:/data codc-tool codc --input_file_1 /data/BRCA_normal.tsv --input_file_2 /data/BRCA_tumor.tsv --output_path /data
 ```
 
-#### Using reference data
-```bash
-# 500 genes
-docker run --rm -v ../../data/reference_datasets:/data codc-tool codc --input_file_1 /data/500_genes/out_CD8_exhausted.tsv --input_file_2 /data/500_genes/out_Macrophages.tsv --output_path /data
-
-# 1000 genes
-docker run --rm -v ../../data/reference_datasets:/data codc-tool codc --input_file_1 /data/1000_genes/out_CD8_exhausted.tsv --input_file_2 /data/1000_genes/out_Macrophages.tsv --output_path /data
-
-# 2500 genes
-docker run --rm -v ../../data/reference_datasets:/data codc-tool codc --input_file_1 /data/2500_genes/out_CD8_exhausted.tsv --input_file_2 /data/2500_genes/out_Macrophages.tsv --output_path /data
-
-# Full Input
-docker run --rm -v ../../data/reference_datasets:/data codc-tool codc --input_file_1 /data/full_input/out_CD8_exhausted.tsv --input_file_2 /data/full_input/out_CD8_exhausted.tsv --output_path /data
-```
-
 ### Using Locally
 ```bash
 pdm run codc --input_file_1 /tests/data/BRCA_normal.tsv --input_file_2 /tests/data/BRCA_tumor.tsv --output_path /tests/data/
-```
-
-#### Using reference data
-```bash
-# 500 genes
-pdm run codc --input_file_1 ../../data/reference_datasets/500_genes/out_CD8_exhausted.tsv --input_file_2 ../../data/reference_datasets/500_genes/out_Macrophages.tsv --output_path ../../data/reference_datasets/500_genes/
-
-# 1000 genes
-pdm run codc --input_file_1 ../../reference_datasets/1000_genes/out_CD8_exhausted.tsv --input_file_2 ../../reference_datasets/1000_genes/out_Macrophages.tsv --output_path ../../reference_datasets/1000_genes/
-
-# 2500 genes
-pdm run codc --input_file_1 ../../reference_datasets/2500_genes/out_CD8_exhausted.tsv --input_file_2 ../../reference_datasets/2500_genes/out_Macrophages.tsv --output_path ../../reference_datasets/1000_genes/
-
-# Full Input
-pdm run codc --input_file_1 ../../reference_datasets/full_input/out_CD8_exhausted.tsv --input_file_2 ../../reference_datasets/full_input/out_Macrophages.tsv --output_path ../../reference_datasets/1000_genes/
 ```
 
 ## Explanation of the Relevant Parameters
