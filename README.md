@@ -1,7 +1,7 @@
 # CODC CLI
 
 <details>
-<summary>## Table of Contents</summary>
+<summary> Table of Contents </summary>
 
 - [Brief Description](#brief-description)
 - [Reference to the Publication](#reference-to-the-publication)
