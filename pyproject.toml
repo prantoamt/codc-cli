@@ -20,3 +20,6 @@ license = {text = "MIT"}
 
 [tool.pdm]
 distribution = false
+
+[tool.pdm.scripts]
+cli = "python cli.py"
