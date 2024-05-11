@@ -2,7 +2,8 @@
 
 This document provides instructions for running the Gene Ontology (GO) enrichment analysis script using the R programming language or Docker. The script performs enrichment analysis on gene sets to identify significant biological terms associated with gene lists derived from differential coexpression analysis (network.tsv).
 
-## Table of Contents
+<details>
+<summary>## Table of Contents</summary>
 
 - [Installation](#installation)
   - [Using Docker](#using-docker)
@@ -12,6 +13,8 @@ This document provides instructions for running the Gene Ontology (GO) enrichmen
   - [Running with Docker](#running-with-docker)
 - [Output Description](#output-description)
 - [Contributing](#contributing)
+
+</details>
 
 ## Installation
 

@@ -1,6 +1,8 @@
 # CODC CLI
 
-## Table of Contents
+<details>
+<summary>## Table of Contents</summary>
+
 - [Brief Description](#brief-description)
 - [Reference to the Publication](#reference-to-the-publication)
 - [Available Commands](#available-commands)
@@ -15,6 +17,8 @@
 - [Output File Format Specification](#output-file-format-specification)
 - [Explanation and Interpretation of the Output](#explanation-and-interpretation-of-the-output)
 - [Recommended Hyperparameters by the Authors](#recommended-hyperparameters-by-the-authors)
+
+</details>
 
 ## Brief Description
 CODC is a Command-Line Interface (CLI) designed for analyzing gene expression data to identify differential coexpression between two conditions using a copula-based approach. 
