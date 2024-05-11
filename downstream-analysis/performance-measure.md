@@ -10,7 +10,7 @@ Two command has been provided to perform the measurements:
 
 ### Using Docker
 
-Build the Docker container from the Dockerfile at the root of the project. This will set up the necessary environment for both Python and R scripts.
+Build the Docker container from the Dockerfile at the root of the project if not done already. This will set up the necessary environment for both Python and R scripts.
 
 ```bash
 docker build -t codc-tool .

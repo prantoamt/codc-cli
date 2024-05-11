@@ -26,9 +26,9 @@ This tool implements the method proposed by Ray, S., Lall, S., & Bandyopadhyay, 
 ## Available Commands
 The CLI includes commands for:
 - Copula based differential co-expression calculation (`codc`)
-- GO enrichment analysis (`go-enrichment`)
-- Performance measurement of Python (`python-performance`)
-- Performance measurement of R (`r-performance`)
+- [GO enrichment analysis (`go-enrichment`)](downstream-analysis/go-enrichment.md)
+- [Performance measurement of Python (`python-performance`)](downstream-analysis/performance-measure.md)
+- [Performance measurement of R (`r-performance`)]((downstream-analysis/performance-measure.md))
 
 This readme, explains Copula based differential co-expression calculation (`codc`).
 
