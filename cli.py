@@ -78,8 +78,20 @@ def cli(ctx):
     default="asymp",
     help="Mode parameter for the ks_2samp function, which determines how the Kolmogorov-Smirnov statistic is computed.",
 )
+@click.option(
+    "--batch_size",
+    type=click.INT,
+    default=100,
+    help="Batch size to perform the calculation in parallel.",
+)
 def calculate_codc(
-    input_file_1, input_file_2, output_path, ties_method, smoothing, ks_stat_method
+    input_file_1,
+    input_file_2,
+    output_path,
+    ties_method,
+    smoothing,
+    ks_stat_method,
+    batch_size,
 ):
     """
     Compute a network of differential coexpression scores using the
@@ -96,12 +108,13 @@ def calculate_codc(
     analyzer = GeneExpressionAnalyzer(empirical_copula=empirical_copula)
 
     # Computing the network using the specified methods
-    network_df = analyzer.compute_dc_copula_network(
+    network_df = analyzer.compute_dc_copula_network_parallel(
         df1,
         df2,
         ties_method=ties_method,
         smoothing=smoothing,
         ks_stat_method=ks_stat_method,
+        batch_size=batch_size,
     )
 
     # Saving the network to the specified output path
@@ -237,7 +250,15 @@ def go_enrichment(
     required=True,
     help="Directory where the performance results will be saved as python_performance.csv.",
 )
-def measure_python_performance(input_file_1, input_file_2, output_path, iterations):
+@click.option(
+    "--batch_size",
+    type=click.INT,
+    default=100,
+    help="Batch size to perform the calculation in parallel.",
+)
+def measure_python_performance(
+    input_file_1, input_file_2, output_path, iterations, batch_size
+):
     """
     Measures and logs the execution time of differential coexpression network calculations
     over multiple runs specified by the user. This function evaluates the performance of the
@@ -260,12 +281,13 @@ def measure_python_performance(input_file_1, input_file_2, output_path, iteratio
     execution_times = []
     for i in range(iterations):
         start_time = time.time()
-        network_df = analyzer.compute_dc_copula_network(
+        network_df = analyzer.compute_dc_copula_network_parallel(
             df1,
             df2,
             ties_method=ties_method,
             smoothing=smoothing,
             ks_stat_method=ks_stat_method,
+            batch_size=batch_size,
         )
         elapsed_time = time.time() - start_time
         execution_times.append(elapsed_time)

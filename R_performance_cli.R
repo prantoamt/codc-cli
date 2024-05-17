@@ -72,7 +72,7 @@ for (i in 1:args$iterations) {
 }
 
 # Save execution times to a CSV file
-execution_data <- data.frame(Execution = 1:args$iterations, Time = execution_times)
+execution_data <- data.frame(Iteration = 1:args$iterations, Time = execution_times)
 output_csv <- file.path(args$output_path, "r_performance.csv")
 fwrite(execution_data, output_csv)
 
