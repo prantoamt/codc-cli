@@ -1,24 +1,28 @@
 # GO Enrichment Analysis
 
-This document provides instructions for running the Gene Ontology (GO) enrichment analysis script using the R programming language or Docker. The script performs enrichment analysis on gene sets to identify significant biological terms associated with gene lists derived from differential coexpression analysis (network.tsv).
+This document provides instructions for running the Gene Ontology (GO) enrichment analysis script using Docker. The script performs enrichment analysis on gene sets to identify significant biological terms associated with gene lists derived from differential coexpression analysis (network.tsv).
 
 <details>
 <summary> Table of Contents </summary>
 
 - [Installation](#installation)
-  - [Using Docker](#using-docker)
-  - [Using Locally](#using-locally)
 - [Usage](#usage)
-  - [Command Line Arguments](#command-line-arguments)
   - [Running with Docker](#running-with-docker)
+  - [Command Line Arguments](#command-line-arguments)
 - [Output Description](#output-description)
-- [Contributing](#contributing)
 
 </details>
 
 ## Installation
 
-### Using Docker
+### Clone the repository and go to the project root dir
+
+Before installing and running the CLI tool, you have to clone the repo and navigate
+to the project's root directory.
+
+```bash
+git clone git@github.com:bionetslab/grn-benchmark.git && cd grn-benchmark/src/codc-cli-tool
+```
 
 To use the script with Docker, first build the Docker image if not done already:
 
@@ -26,15 +30,17 @@ To use the script with Docker, first build the Docker image if not done already:
 docker build -t codc-tool .
 ```
 
-### Using Locally
+## Usage
 
-Ensure R is installed on your system, then install the required R packages:
+### Running with Docker
 
-```R
-Rscript dependencies.R
+To run the GO enrichment analysis using Docker, use the following command:
+
+```bash
+docker run --rm -v ./data:/data codc-tool go-enrichment --input_file=/data/network.tsv --output_path=/data --threshold=0.6 --key_type=SYMBOL --ontology=BP --p_adjust_method=BH --qvalue_cutoff=0.05 --show_category=10
 ```
 
-## Usage
+Replace `./data` with the path to your data directory where `network.tsv` exists if it is different than `./data`, and adjust the command-line arguments as needed.
 
 ### Command Line Arguments
 
@@ -48,16 +54,6 @@ The script accepts the following arguments:
 - `--p_adjust_method`: Method for adjusting p-values. Default is 'BH'.
 - `--qvalue_cutoff`: Q-value cutoff for significant enrichment. Default is 0.05.
 - `--show_category`: Number of categories to show in the bar plot. Default is 10.
-
-### Running with Docker
-
-To run the GO enrichment analysis using Docker, use the following command:
-
-```bash
-docker run --rm -v /path/to/data:/data codc-tool go-enrichment --input_file=/data/network.tsv --output_path=/data --threshold=0.5 --key_type=SYMBOL --ontology=BP --p_adjust_method=BH --qvalue_cutoff=0.05 --show_category=20
-```
-
-Replace `/path/to/data` with the actual path to your data directory, and adjust the command-line arguments as needed.
 
 ## Output Description
 

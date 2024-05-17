@@ -1,17 +1,20 @@
-# CODC CLI
+# CODC CLI: Command-line interface to calculate copula-based differential gene co-expression
+
+![Cover Image](data/images/cover.png)
 
 <details>
 <summary> Table of Contents </summary>
 
 - [Brief Description](#brief-description)
 - [Reference to the Publication](#reference-to-the-publication)
+- [Methodology](#methodology)
 - [Available Commands](#available-commands)
 - [Installation Instructions](#installation-instructions)
   - [Using Docker](#using-docker)
-  - [Using Locally](#using-locally)
-- [Execution Instructions Using Example Data](#execution-instructions-using-example-data)
+  - [Using Locally](#or-using-locally)
+- [Execution Of CODC Using BRCA Data](#execution-of-codc-using-brca-data)
   - [Using Docker](#using-docker-1)
-  - [Using Locally](#using-locally-1)
+  - [Using Locally](#or-using-locally-1)
 - [Explanation of the Relevant Parameters](#explanation-of-the-relevant-parameters)
 - [Input File Format Specification](#input-file-format-specification)
 - [Output File Format Specification](#output-file-format-specification)
@@ -21,28 +24,40 @@
 </details>
 
 ## Brief Description
-CODC is a Command-Line Interface (CLI) designed for analyzing gene expression data to identify differential coexpression between two conditions using a copula-based approach. 
-This tool is reimplemented in python and R based on the [author's R implementation](https://github.com/Snehalikalall/CODC/blob/master/distance_mat_calculation.R) due to calculation complexoty issue. Besides the coexpression calculation scripts, it also provides downstream and performace measurement scripts.
+The CODC CLI tool is designed for analyzing gene expression data to calculate differential co-expression using a copula-based approach. It is implemented in Python based on the [R implementation](https://github.com/Snehalikalall/CODC/blob/master/distance_mat_calculation.R) of Ray et al.  for enhanced performance, with support for parallel processing. The tool allows users to compute differential co-expression networks and provides additional commands for downstream analysis and performance measurement. Installation can be done via Docker or locally using PDM, a Python package manager. The tool expects input files in TSV format and outputs the co-expression network as a TSV file as well. 
 
 ## Reference to the Publication
-This tool implements the method proposed by Ray, S., Lall, S., & Bandyopadhyay, S. in "CODC: a Copula-based model to identify differential coexpression." You can read the study here: [npj Systems Biology and Applications (2020)](https://doi.org/10.1038/s41540-020-0137-9).
+This tool implements the method proposed by Ray, S., Lall, S., & Bandyopadhyay, S. in ["CODC: a Copula-based model to identify differential co-expression."](https://doi.org/10.1038/s41540-020-0137-9).
+
+## Methodology
+The methodology to compute the copula based differential co-expression and mathematical explaination is detailed [here](downstream-analysis/methodology.md)
 
 ## Available Commands
 The CLI includes commands for:
 - Copula based differential co-expression calculation (`codc`)
 - [GO enrichment analysis (`go-enrichment`)](downstream-analysis/go-enrichment.md)
 - [Performance measurement of Python script (`python-performance`)](downstream-analysis/performance-measure.md)
-- [Performance measurement of R script (`r-performance`)]((downstream-analysis/performance-measure.md))
+- [Performance measurement of R script (`r-performance`)](downstream-analysis/performance-measure.md)
 
 This readme, explains Copula based differential co-expression calculation (`codc`).
 
 ## Installation Instructions
+
+### Clone the repository and go to the project root dir
+
+Before installing and running the CLI tool, you have to clone the repo and navigate
+to the project's root directory.
+
+```bash
+git clone git@github.com:bionetslab/grn-benchmark.git && cd grn-benchmark/src/codc-cli-tool
+```
+
 ### Using Docker
 ```bash
 docker build -t codc-tool .
 ```
 
-### Using Locally
+### OR Using Locally
 Install PDM (Python package manager) if not already installed:
 ```bash
 pip install pdm
@@ -52,35 +67,37 @@ Then, install the packages using PDM:
 pdm install
 ```
 
-## Execution of codc Using Example Data
-Before executing the commands below, go to the root directory of the CODC project. Outwise, you may have directory path mismatch.
-The commands will output the `network.tsv`in `/tests/data/` directory
+## Execution of codc Using BRCA Data
+
+The commands below will output the `network.tsv`in `./data/` directory
+
 ### Using Docker
 ```bash
-docker run --rm -v /tests/data:/data codc-tool codc --input_file_1 /data/BRCA_normal.tsv --input_file_2 /data/BRCA_tumor.tsv --output_path /data
+docker run --rm -v ./data:/data codc-tool codc --input_file_1 /data/BRCA_normal.tsv --input_file_2 /data/BRCA_tumor.tsv --output_path /data --batch_size 100
 ```
 
-### Using Locally
+### OR Using Locally
 ```bash
-pdm run cli codc --input_file_1 /tests/data/BRCA_normal.tsv --input_file_2 /tests/data/BRCA_tumor.tsv --output_path /tests/data/
+pdm run cli codc --input_file_1 ./data/BRCA_normal.tsv --input_file_2 ./data/BRCA_tumor.tsv --output_path ./data --batch_size 100
 ```
 
 ## Explanation of the Relevant Parameters
+
 #### `--input_file_1`
-- **Description**: Path to the TSV file containing gene expression data for the first condition, often a disease state such as "tumor."
+- **Description**: Path to the TSV file containing gene expression data for the first condition.
 - **Required**: Yes
-- **Example**: `--inputfile_1 /path/to/tumor_data.tsv`
+- **Example**: `--inputfile_1 /path/to/condition1.tsv`
 
 #### `--input_file_2`
-- **Description**: Path to the TSV file containing gene expression data for the second condition, typically a control or normal state.
+- **Description**: Path to the TSV file containing gene expression data for the second condition.
 - **Required**: Yes
-- **Example**: `--inputfile_2 /path/to/normal_data.tsv`
+- **Example**: `--inputfile_2 /path/to/condition2.tsv`
 
 #### `--output_path`
-- **Description**: The directory where the output TSV file will be saved. This file will contain the computed differential coexpression network.
+- **Description**: The directory where the output TSV file will be saved. This file will contain the computed differential co-expression network based on copula approach.
 - **Required**: Yes
 - **Example**: `--output_path /path/to/output`
-- **Output Details**: The output is a TSV file named `network.tsv`, which includes columns for target gene, regulator gene, condition, and the weight of the coexpression difference.
+- **Output Details**: The output is a TSV file named `network.tsv`, which includes columns for target gene, regulator gene, condition, and the weight as the co-expression difference.
 
 #### `--ties_method`
 - **Description**: Method to handle ties in data ranking within the pseudo-observations calculation.
@@ -100,13 +117,18 @@ pdm run cli codc --input_file_1 /tests/data/BRCA_normal.tsv --input_file_2 /test
 - **Example**: `--smoothing beta`
 
 #### `--ks_stat_method`
-- **Description**: Determines the method used for computing the Kolmogorov-Smirnov statistic, which quantifies the differential coexpression.
+- **Description**: Determines the method used for computing the Kolmogorov-Smirnov statistic, which quantifies the differential co-expression.
 - **Required**: No (default is "asymp")
 - **Options**:
   - `asymp`: Use asymptotic properties of the KS statistic.
   - `auto`: Automatically determine the best method based on data characteristics.
   - `exact`: Compute an exact KS statistic.
 - **Example**: `--ks_stat_method exact`
+
+#### `--batch_size`
+- **Description**: Determines how many pair of genes will be executed in each batch in parallel execution.
+- **Required**: No (default is 100)
+- **Example**: `--batch_size 100`
 
 ## Input File Format Specification
 Input files must be in a tab-separated format with gene names in rows and sample IDs in columns. Example:
@@ -126,9 +148,9 @@ The output `network.tsv` is a tab-separated file that includes:
 
 Example output:
 
-|  Target   |	Regulator   |  Condition                   |  Weight |
-|-----------|--------------|------------------------------|---------|
-|  MYL2    	|ACTA1	      |Diff Co-Exp of both Condition |	0.1111  |
+|  Target   |	Regulator    |  Condition                         |  Weight |
+|-----------|--------------|------------------------------------|---------|
+|  MYL2    	|ACTA1	       | Diff Co-Exp between both Condition |	0.1111  |
 
 
 ## Explanation and Interpretation of the Output
@@ -139,3 +161,7 @@ There were no specific hyperparameters recommended by the authors. The default p
 - `ks_stat_method = asymp`
 - `ties_method = average`
 - `smoothing = none`
+
+-------------------------------------------------------
+
+Md Badiuzzaman Pranto, Friedrich-Alexander-Universität, Erlangen-Nürnberg.
